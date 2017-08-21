@@ -59,6 +59,7 @@ namespace HDExportMetadataAndFile.View
         public string MA_BANG { get; set; }               
         public string Season { get; set; }       
         public string MASTER_CLIP_NAME { get; set; }
+        public string DESCRIPTION { get; set; }
         public string NAS_IP { get; set; }
         public string USERNAME { get; set; }
         public string PASSWORD { get; set; }

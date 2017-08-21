@@ -97,20 +97,10 @@ namespace HDExportMetadataAndFile
                 catch { }
             _connectionStr = AppSettings.Default.ConnectionStr;
             _userConfigPath = Path.Combine(_configFolder, "UserConfig.xml");
+
             if (!Directory.Exists(_logFilePath))
             {
                 Directory.CreateDirectory(_logFilePath);
-            }
-            else
-            {
-                string[] files = Directory.GetFiles(_logFilePath, "*.txt", SearchOption.TopDirectoryOnly);
-                if (files.Count() > 100)
-                {
-                    for (var i = 0; i < 70; i++)
-                    {
-                        System.IO.File.Delete(files[i]);
-                    }
-                }
             }
 
             if (File.Exists(_userConfigPath))
@@ -201,6 +191,15 @@ namespace HDExportMetadataAndFile
             {
                 try
                 {
+                    string[] files = Directory.GetFiles(_logFilePath, "*.txt", SearchOption.TopDirectoryOnly);
+                    if (files.Count() > 80)
+                    {
+                        for (var i = 0; i < 50; i++)
+                        {
+                            System.IO.File.Delete(files[i]);
+                        }
+                    }
+
                     _logFile = Path.Combine(_logFilePath, DateTime.Now.Date.ToString("yyyy:MM:dd").Replace(":", "") + ".txt");
                     if (!File.Exists(_logFile))
                     {
@@ -220,9 +219,7 @@ namespace HDExportMetadataAndFile
                                         nodeId = 73
                                     }).ToList();
                                     if (lstExportDB.Count > 0)
-                                    {
-                                        //Task[] tasks = new Task[lstExportDB.Count];
-                                        //int i = 0;  
+                                    {                                        
                                         strWaiting73 = "";
                                         foreach (var i in lstExportDB)
                                         {
@@ -230,15 +227,10 @@ namespace HDExportMetadataAndFile
                                         }
                                         foreach (var postId in lstExportDB)
                                         {
-                                            //tasks[i] = Task.Run(() =>
-                                            //{
                                             strProcessing73 = postId.ToString();
                                             strWaiting73 = strWaiting73.Replace(strProcessing73, "");
                                             foreach (var tempConfig in lstConfig)
-                                            {
-                                                //for (int j = 0; j < gvConfig.RowCount; j++)
-                                                //{
-                                                //    var tempConfig = gvConfig.GetRow(j) as View.configObj;
+                                            {                                               
 
                                                 try
                                                 {
@@ -254,7 +246,7 @@ namespace HDExportMetadataAndFile
                                                         var endRight = filesDB.END_RIGHTS == null ? DateTime.Now.AddYears(1) : filesDB.END_RIGHTS;
                                                         var season = filesDB.Season == null ? " " : filesDB.Season;
                                                         var episode = filesDB.EPISODE_NUMBER == null ? 0 : filesDB.EPISODE_NUMBER;
-                                                        string typeDescription = filesDB.MASTER_CLIP_NAME == null ? "Others" : Utils.ConvertToVietnameseNonSign(filesDB.MASTER_CLIP_NAME.Replace("(", "_").Replace(")", "_"));
+                                                        string typeDescription = filesDB.DESCRIPTION == null ? "Others" : Utils.ConvertToVietnameseNonSign(filesDB.DESCRIPTION.Replace("(", "_").Replace(")", "_"));
 
                                                         string OriginalFileName = tempConfig.FileName.Contains("Mã băng") ? Utils.ConvertToVietnameseNonSign(MaBang.Replace(" ", "").Replace("-", "_").Replace("*", "_").Replace("\'", "_").Replace(":", "_").Replace("\\", "_").Replace("/", "_").Trim()) : " ";
                                                         if (tempConfig.FileName.Contains("Tên chương trình"))
@@ -1331,18 +1323,8 @@ namespace HDExportMetadataAndFile
                                                     addLog(_logFile, "Node 73: Loi khi gui mail: " + ex.ToString());
                                                 }
                                                 errorStr = "";
-                                            }
-                                            //});
-                                            //i++;
-                                        }
-                                        //try
-                                        //{
-                                        //    Task.WaitAll(tasks);
-                                        //}
-                                        //catch (Exception ex)
-                                        //{
-                                        //    addLog(_logFile, "Node 73: Loi khi Wait All tasks: " + ex.ToString());
-                                        //}
+                                            }                                            
+                                        }                                        
                                     }
                                     else
                                     {
@@ -1367,25 +1349,18 @@ namespace HDExportMetadataAndFile
                                         nodeId = 74
                                     }).ToList();
                                     if (lstExportDB.Count > 0)
-                                    {
-                                        //Task[] tasks = new Task[lstExportDB.Count];
-                                        //int i = 0;
+                                    {                                        
                                         strWaiting74 = "";
                                         foreach (var i in lstExportDB)
                                         {
                                             strWaiting74 += i.ToString() + ", ";
                                         }
                                         foreach (var postId in lstExportDB)
-                                        {
-                                            //tasks[i] = Task.Run(() =>
-                                            //{
+                                        {                                            
                                             strProcessing74 = postId.ToString();
                                             strWaiting74 = strWaiting74.Replace(strProcessing74, "");
                                             foreach (var tempConfig in lstConfig)
-                                            {
-                                                //    for (int j = 0; j < gvConfig.RowCount; j++)
-                                                //{
-                                                //    var tempConfig = gvConfig.GetRow(j) as View.configObj;
+                                            {                                               
 
                                                 try
                                                 {
@@ -1401,7 +1376,7 @@ namespace HDExportMetadataAndFile
                                                         var endRight = filesDB.END_RIGHTS == null ? DateTime.Now.AddYears(1) : filesDB.END_RIGHTS;
                                                         var season = filesDB.Season == null ? " " : filesDB.Season;
                                                         var episode = filesDB.EPISODE_NUMBER == null ? 0 : filesDB.EPISODE_NUMBER;
-                                                        string typeDescription = filesDB.MASTER_CLIP_NAME == null ? "Others" : Utils.ConvertToVietnameseNonSign(filesDB.MASTER_CLIP_NAME.Replace("(", "_").Replace(")", "_"));
+                                                        string typeDescription = filesDB.DESCRIPTION == null ? "Others" : Utils.ConvertToVietnameseNonSign(filesDB.DESCRIPTION.Replace("(", "_").Replace(")", "_"));
 
                                                         string OriginalFileName = tempConfig.FileName.Contains("Mã băng") ? Utils.ConvertToVietnameseNonSign(MaBang.Replace(" ", "").Replace("-", "_").Replace("*", "_").Replace("\'", "_").Replace(":", "_").Replace("\\", "_").Replace("/", "_").Trim()) : " ";
                                                         if (tempConfig.FileName.Contains("Tên chương trình"))
@@ -2480,18 +2455,9 @@ namespace HDExportMetadataAndFile
                                                 }
                                                 errorStr = "";
                                             }
-                                            //});
-                                            //i++;
-
+                                            
                                         }
-                                        //try
-                                        //{
-                                        //    Task.WaitAll(tasks);
-                                        //}
-                                        //catch (Exception ex)
-                                        //{
-                                        //    addLog(_logFile, "Node 74: Loi khi Wait All tasks: " + ex.ToString());
-                                        //}
+                                        
                                     }
                                     else
                                     {
@@ -2747,7 +2713,7 @@ namespace HDExportMetadataAndFile
                         {
                             using (BinaryWriter bwwrite = new BinaryWriter(fswrite))
                             {
-                                for (;;)
+                                for (; ; )
                                 {
                                     int read = bwread.Read(dataArray, 0, array_length);
                                     if (0 == read)
