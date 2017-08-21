@@ -101,6 +101,17 @@ namespace HDExportMetadataAndFile
             {
                 Directory.CreateDirectory(_logFilePath);
             }
+            else
+            {
+                string[] files = Directory.GetFiles(_logFilePath, "*.txt", SearchOption.TopDirectoryOnly);
+                if (files.Count() > 100)
+                {
+                    for (var i = 0; i < 70; i++)
+                    {
+                        System.IO.File.Delete(files[i]);
+                    }
+                }
+            }
 
             if (File.Exists(_userConfigPath))
             {
