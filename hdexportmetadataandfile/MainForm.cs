@@ -219,7 +219,7 @@ namespace HDExportMetadataAndFile
                                         nodeId = 73
                                     }).ToList();
                                     if (lstExportDB.Count > 0)
-                                    {                                        
+                                    {
                                         strWaiting73 = "";
                                         foreach (var i in lstExportDB)
                                         {
@@ -230,7 +230,7 @@ namespace HDExportMetadataAndFile
                                             strProcessing73 = postId.ToString();
                                             strWaiting73 = strWaiting73.Replace(strProcessing73, "");
                                             foreach (var tempConfig in lstConfig)
-                                            {                                               
+                                            {
 
                                                 try
                                                 {
@@ -288,14 +288,15 @@ namespace HDExportMetadataAndFile
                                                         {
                                                             OriginalFileName += addSymbol;
                                                         }
-                                                        if (!ftpDirectoryExists(typeDescription, tempConfig.NasPath, tempConfig.NasUsername, tempConfig.NasPass))
-                                                        {
-                                                            if (!createFTPDirectory(tempConfig.NasPath, tempConfig.NasUsername, tempConfig.NasPass, typeDescription))
+                                                        if (tempConfig.NasPath.Length > 7)
+                                                            if (!ftpDirectoryExists(typeDescription, tempConfig.NasPath, tempConfig.NasUsername, tempConfig.NasPass))
                                                             {
-                                                                addLog(_logFile, "Node 73: Tao thu muc " + typeDescription + " tren nas khong thanh cong");
-                                                                ftpUploadFolder = tempConfig.NasPath;
+                                                                if (!createFTPDirectory(tempConfig.NasPath, tempConfig.NasUsername, tempConfig.NasPass, typeDescription))
+                                                                {
+                                                                    addLog(_logFile, "Node 73: Tao thu muc " + typeDescription + " tren nas khong thanh cong");
+                                                                    ftpUploadFolder = tempConfig.NasPath;
+                                                                }
                                                             }
-                                                        }
                                                         #endregion
                                                         #region Export từ nas này sang nas khác
                                                         if (tempConfig.NasPath.Length > 15)
@@ -1323,8 +1324,8 @@ namespace HDExportMetadataAndFile
                                                     addLog(_logFile, "Node 73: Loi khi gui mail: " + ex.ToString());
                                                 }
                                                 errorStr = "";
-                                            }                                            
-                                        }                                        
+                                            }
+                                        }
                                     }
                                     else
                                     {
@@ -1349,18 +1350,18 @@ namespace HDExportMetadataAndFile
                                         nodeId = 74
                                     }).ToList();
                                     if (lstExportDB.Count > 0)
-                                    {                                        
+                                    {
                                         strWaiting74 = "";
                                         foreach (var i in lstExportDB)
                                         {
                                             strWaiting74 += i.ToString() + ", ";
                                         }
                                         foreach (var postId in lstExportDB)
-                                        {                                            
+                                        {
                                             strProcessing74 = postId.ToString();
                                             strWaiting74 = strWaiting74.Replace(strProcessing74, "");
                                             foreach (var tempConfig in lstConfig)
-                                            {                                               
+                                            {
 
                                                 try
                                                 {
@@ -1419,17 +1420,18 @@ namespace HDExportMetadataAndFile
                                                         {
                                                             OriginalFileName += addSymbol;
                                                         }
-                                                        if (!ftpDirectoryExists(typeDescription, tempConfig.NasPath, tempConfig.NasUsername, tempConfig.NasPass))
-                                                        {
-                                                            if (!createFTPDirectory(tempConfig.NasPath, tempConfig.NasUsername, tempConfig.NasPass, typeDescription))
+                                                        if (tempConfig.NasPath.Length > 7)
+                                                            if (!ftpDirectoryExists(typeDescription, tempConfig.NasPath, tempConfig.NasUsername, tempConfig.NasPass))
                                                             {
-                                                                addLog(_logFile, "Node 74: Tao thu muc " + typeDescription + " tren nas khong thanh cong");
-                                                                ftpUploadFolder = tempConfig.NasPath;
+                                                                if (!createFTPDirectory(tempConfig.NasPath, tempConfig.NasUsername, tempConfig.NasPass, typeDescription))
+                                                                {
+                                                                    addLog(_logFile, "Node 74: Tao thu muc " + typeDescription + " tren nas khong thanh cong");
+                                                                    ftpUploadFolder = tempConfig.NasPath;
+                                                                }
                                                             }
-                                                        }
                                                         #endregion
                                                         #region Export từ nas này sang nas khác
-                                                        if (tempConfig.NasPath.Length > 0)
+                                                        if (tempConfig.NasPath.Length > 7)
                                                         {
 
                                                             #region Export Media Highres
@@ -2455,9 +2457,9 @@ namespace HDExportMetadataAndFile
                                                 }
                                                 errorStr = "";
                                             }
-                                            
+
                                         }
-                                        
+
                                     }
                                     else
                                     {
@@ -2753,7 +2755,7 @@ namespace HDExportMetadataAndFile
                 bsConfigList.List.Add(new View.configObj
                 {
                     FileType = temp,
-                    NasPath = "ftp://" + txtNasIP.Text + ":" + nNasPort.Value.ToString() + txtNasPath.Text,
+                    NasPath = txtNasIP.Text.Length < 7 ? "" : "ftp://" + txtNasIP.Text + ":" + nNasPort.Value.ToString() + txtNasPath.Text,
                     NasUsername = txtNasUsername.Text,
                     NasPass = txtNasPass.Text,
                     LocalPath = txtSaveFolder.Text,
