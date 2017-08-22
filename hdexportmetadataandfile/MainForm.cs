@@ -246,7 +246,7 @@ namespace HDExportMetadataAndFile
                                                         var endRight = filesDB.END_RIGHTS == null ? DateTime.Now.AddYears(1) : filesDB.END_RIGHTS;
                                                         var season = filesDB.Season == null ? " " : filesDB.Season;
                                                         var episode = filesDB.EPISODE_NUMBER == null ? 0 : filesDB.EPISODE_NUMBER;
-                                                        string typeDescription = filesDB.DESCRIPTION == null ? "Others" : Utils.ConvertToVietnameseNonSign(filesDB.DESCRIPTION.Replace("(", "_").Replace(")", "_"));
+                                                        string typeDescription = filesDB.TYPE_DESCRIPTION == null ? "Others" : Utils.ConvertToVietnameseNonSign(filesDB.TYPE_DESCRIPTION.Replace("(", "_").Replace(")", "_").Replace("/","_"));
 
                                                         string OriginalFileName = tempConfig.FileName.Contains("Mã băng") ? Utils.ConvertToVietnameseNonSign(MaBang.Replace(" ", "").Replace("-", "_").Replace("*", "_").Replace("\'", "_").Replace(":", "_").Replace("\\", "_").Replace("/", "_").Trim()) : " ";
                                                         if (tempConfig.FileName.Contains("Tên chương trình"))
@@ -1377,7 +1377,7 @@ namespace HDExportMetadataAndFile
                                                         var endRight = filesDB.END_RIGHTS == null ? DateTime.Now.AddYears(1) : filesDB.END_RIGHTS;
                                                         var season = filesDB.Season == null ? " " : filesDB.Season;
                                                         var episode = filesDB.EPISODE_NUMBER == null ? 0 : filesDB.EPISODE_NUMBER;
-                                                        string typeDescription = filesDB.DESCRIPTION == null ? "Others" : Utils.ConvertToVietnameseNonSign(filesDB.DESCRIPTION.Replace("(", "_").Replace(")", "_"));
+                                                        string typeDescription = filesDB.TYPE_DESCRIPTION == null ? "Others" : Utils.ConvertToVietnameseNonSign(filesDB.TYPE_DESCRIPTION.Replace("(", "_").Replace(")", "_").Replace("/", "_"));
 
                                                         string OriginalFileName = tempConfig.FileName.Contains("Mã băng") ? Utils.ConvertToVietnameseNonSign(MaBang.Replace(" ", "").Replace("-", "_").Replace("*", "_").Replace("\'", "_").Replace(":", "_").Replace("\\", "_").Replace("/", "_").Trim()) : " ";
                                                         if (tempConfig.FileName.Contains("Tên chương trình"))
