@@ -153,6 +153,16 @@
   <ItemGroup>
     <Content Include="HDICON.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HDControl\HDControl.csproj">
+      <Project>{c46dc533-2bd8-4118-85d6-e0c0da038aa5}</Project>
+      <Name>HDControl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HDCore\HDCore.csproj">
+      <Project>{41cda197-3450-4918-8890-6f0cf82bd9f8}</Project>
+      <Name>HDCore</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
