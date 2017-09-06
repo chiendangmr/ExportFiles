@@ -148,20 +148,20 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\LIBS\HDControl\HDControl.csproj">
-      <Project>{C46DC533-2BD8-4118-85D6-E0C0DA038AA5}</Project>
-      <Name>HDControl</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\LIBS\HDCore\HDCore.csproj">
-      <Project>{41cda197-3450-4918-8890-6f0cf82bd9f8}</Project>
-      <Name>HDCore</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="HDICON.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HDControl\HDControl.csproj">
+      <Project>{c46dc533-2bd8-4118-85d6-e0c0da038aa5}</Project>
+      <Name>HDControl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HDCore\HDCore.csproj">
+      <Project>{41cda197-3450-4918-8890-6f0cf82bd9f8}</Project>
+      <Name>HDCore</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
