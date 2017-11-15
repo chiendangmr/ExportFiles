@@ -68,6 +68,11 @@ namespace HDExportMetadataAndFile
         string _configFolder = Path.Combine(Application.StartupPath, "Config");
         private void MainForm_Load(object sender, EventArgs e)
         {
+            if (System.Diagnostics.Process.GetProcessesByName(Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetEntryAssembly().Location)).Count() > 1)
+            {
+                HDMessageBox.Show("Phần mềm hiện đang chạy trên windows!", "Chú ý", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                System.Diagnostics.Process.GetCurrentProcess().Kill();
+            }
             if (!Directory.Exists(_configFolder))
             {
                 Directory.CreateDirectory(_configFolder);
