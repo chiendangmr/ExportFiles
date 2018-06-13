@@ -2819,7 +2819,7 @@ namespace HDExportMetadataAndFile
             }
             catch (Exception ex)
             {
-                addLog(_logFile, "Check ftpDirectoryExists Error: " + ex.Message);
+                addLog(_logFile, "Check ftpDirectoryExists Error: " + ex.ToString());
                 return false;
             }
         }
@@ -2857,7 +2857,7 @@ namespace HDExportMetadataAndFile
             }
             catch (Exception ex)
             {
-                addLog(_logFile, "Get FTP file list ERROR: " + ex.Message);
+                addLog(_logFile, "Get FTP file list ERROR: " + ex.ToString());
                 return null;
             }
 
@@ -2870,20 +2870,20 @@ namespace HDExportMetadataAndFile
         {
             try
             {
-                FtpWebRequest request = (FtpWebRequest)FtpWebRequest.Create(ftpHost + newDirectory);
-
-                request.Credentials = new NetworkCredential(ftpUsername, ftpPassword);
-                request.UsePassive = true;
-                request.UseBinary = true;
-                request.KeepAlive = false;
-
-                request.Method = WebRequestMethods.Ftp.MakeDirectory;
-
-                FtpWebResponse makeDirectoryResponse = (FtpWebResponse)request.GetResponse();
+                FtpWebRequest ftpReq = WebRequest.Create(ftpHost + newDirectory) as FtpWebRequest;
+                ftpReq.Method = WebRequestMethods.Ftp.MakeDirectory;
+                ftpReq.Credentials = new NetworkCredential(ftpUsername, ftpPassword);
+                ftpReq.UsePassive = true;
+                ftpReq.UseBinary = true;
+                ftpReq.KeepAlive = false;
+                using (var resp = (FtpWebResponse)ftpReq.GetResponse())
+                {
+                    addLog(_logFile, "Creating FTP directory: " + resp.StatusCode.ToString());
+                }                
             }
             catch (Exception ex)
             {
-                addLog(_logFile, "Create FTP directory ERROR: " + ex.Message + ". " + ftpHost + newDirectory);
+                addLog(_logFile, "Create FTP directory ERROR: " + ex.ToString() + ". " + ftpHost + newDirectory);
                 return false;
             }
             return true;
