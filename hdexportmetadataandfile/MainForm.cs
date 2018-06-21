@@ -251,7 +251,7 @@ namespace HDExportMetadataAndFile
                                                         var endRight = filesDB.END_RIGHTS == null ? DateTime.Now.AddYears(1) : filesDB.END_RIGHTS;
                                                         var season = filesDB.Season == null ? " " : filesDB.Season;
                                                         var episode = filesDB.EPISODE_NUMBER == null ? 0 : filesDB.EPISODE_NUMBER;
-                                                        string typeDescription = filesDB.TYPE_DESCRIPTION == null ? "Others" : Utils.ConvertToVietnameseNonSign(filesDB.TYPE_DESCRIPTION.Replace("(", "_").Replace(")", "_").Replace("/","_").Replace(",", "_"));
+                                                        string typeDescription = filesDB.TYPE_DESCRIPTION == null ? "Others" : Utils.ConvertToVietnameseNonSign(filesDB.TYPE_DESCRIPTION.Replace("(", "_").Replace(")", "_").Replace("/", "_").Replace(",", "_"));
 
                                                         string OriginalFileName = tempConfig.FileName.Contains("Mã băng") ? Utils.ConvertToVietnameseNonSign(MaBang.Replace(" ", "_").Replace("-", "_").Replace("*", "_").Replace("\'", "_").Replace(":", "_").Replace("\\", "_").Replace("/", "_").Replace(",", "_").Trim()) : " ";
                                                         if (tempConfig.FileName.Contains("Tên chương trình"))
@@ -294,7 +294,7 @@ namespace HDExportMetadataAndFile
                                                             OriginalFileName += addSymbol;
                                                         }
                                                         if (tempConfig.NasPath.Length > 7)
-                                                            if (!ftpDirectoryExists(typeDescription, tempConfig.NasPath, tempConfig.NasUsername, tempConfig.NasPass))
+                                                            if (!DirectoryExists(ftpUploadFolder, tempConfig.NasUsername, tempConfig.NasPass))
                                                             {
                                                                 if (!createFTPDirectory(tempConfig.NasPath, tempConfig.NasUsername, tempConfig.NasPass, typeDescription))
                                                                 {
@@ -313,7 +313,7 @@ namespace HDExportMetadataAndFile
                                                             {
                                                                 try
                                                                 {
-                                                                    if (uploadFromUnc(uncHighresPath + "\\" + tempHighres, OriginalFileName + ".mxf", ftpUploadFolder, tempConfig.NasUsername, tempConfig.NasPass))
+                                                                    if (UploadFromUnc(uncHighresPath + "\\" + tempHighres, OriginalFileName + ".mxf", ftpUploadFolder, tempConfig.NasUsername, tempConfig.NasPass))
                                                                     {
                                                                         uncHighresSuccess = true;
                                                                         //Ghi log
@@ -360,7 +360,7 @@ namespace HDExportMetadataAndFile
                                                             //            //unc
                                                             //            try
                                                             //            {
-                                                            //                if (uploadFromUnc(Path.Combine(lowresDb.UNC_BASE_PATH_DATA3, lowresDb.FILE_NAME), OriginalFileName + "." + Path.GetExtension(lowresDb.FILE_NAME), tempConfig.NasPath, tempConfig.NasUsername, tempConfig.NasPass))
+                                                            //                if (uploadFromUnc(Path.Combine(lowresDb.UNC_BASE_PATH_DATA3, lowresDb.FILE_NAME), OriginalFileName +   Path.GetExtension(lowresDb.FILE_NAME), tempConfig.NasPath, tempConfig.NasUsername, tempConfig.NasPass))
                                                             //                {
                                                             //                    uncLowresSucess = true;
                                                             //                    //Ghi log
@@ -381,7 +381,7 @@ namespace HDExportMetadataAndFile
                                                             //            {
                                                             //                try
                                                             //                {
-                                                            //                    if (copyFile(lowresDb.FILE_NAME, OriginalFileName + "." + Path.GetExtension(lowresDb.FILE_NAME), srcLowresPath + lowresDb.DATA3_DIRECTORY, lowresDb.USERNAME, lowresDb.PASSWORD, tempConfig.NasPath, tempConfig.NasUsername, tempConfig.NasPass))
+                                                            //                    if (copyFile(lowresDb.FILE_NAME, OriginalFileName +   Path.GetExtension(lowresDb.FILE_NAME), srcLowresPath + lowresDb.DATA3_DIRECTORY, lowresDb.USERNAME, lowresDb.PASSWORD, tempConfig.NasPath, tempConfig.NasUsername, tempConfig.NasPass))
                                                             //                    {
                                                             //                        //Ghi log
                                                             //                        addLog(_logFile, "Node 73: Xuat lowres bang ftp thanh cong");
@@ -417,7 +417,7 @@ namespace HDExportMetadataAndFile
                                                             //            //unc
                                                             //            try
                                                             //            {
-                                                            //                if (uploadFromUnc(Path.Combine(Path.Combine(audioDb.UNC_HOME, audioDb.NAS_DATA_PATH), audioDb.FILE_NAME), OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME), tempConfig.NasPath, tempConfig.NasUsername, tempConfig.NasPass))
+                                                            //                if (uploadFromUnc(Path.Combine(Path.Combine(audioDb.UNC_HOME, audioDb.NAS_DATA_PATH), audioDb.FILE_NAME), OriginalFileName +   Path.GetExtension(audioDb.FILE_NAME), tempConfig.NasPath, tempConfig.NasUsername, tempConfig.NasPass))
                                                             //                {
                                                             //                    uncHighresOriginalSucess = true;
                                                             //                    //Ghi log
@@ -438,7 +438,7 @@ namespace HDExportMetadataAndFile
                                                             //            {
                                                             //                try
                                                             //                {
-                                                            //                    if (copyFile(audioDb.FILE_NAME, OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME), Path.Combine(srcAudioPath, audioDb.NAS_DATA_PATH), audioDb.USERNAME, audioDb.PASSWORD, tempConfig.NasPath, tempConfig.NasUsername, tempConfig.NasPass))
+                                                            //                    if (copyFile(audioDb.FILE_NAME, OriginalFileName +   Path.GetExtension(audioDb.FILE_NAME), Path.Combine(srcAudioPath, audioDb.NAS_DATA_PATH), audioDb.USERNAME, audioDb.PASSWORD, tempConfig.NasPath, tempConfig.NasUsername, tempConfig.NasPass))
                                                             //                    {
                                                             //                        //Ghi log
                                                             //                        addLog(_logFile, "Node 73: Xuat highres original bang ftp thanh cong");
@@ -475,7 +475,7 @@ namespace HDExportMetadataAndFile
                                                                         //unc
                                                                         try
                                                                         {
-                                                                            if (uploadFromUnc(Path.Combine(Path.Combine(audioDb.UNC_HOME, audioDb.NAS_DATA_PATH), audioDb.FILE_NAME), OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME), ftpUploadFolder, tempConfig.NasUsername, tempConfig.NasPass))
+                                                                            if (UploadFromUnc(Path.Combine(Path.Combine(audioDb.UNC_HOME, audioDb.NAS_DATA_PATH), audioDb.FILE_NAME), OriginalFileName + Path.GetExtension(audioDb.FILE_NAME), ftpUploadFolder, tempConfig.NasUsername, tempConfig.NasPass))
                                                                             {
                                                                                 uncImageSucess = true;
                                                                                 //Ghi log
@@ -496,7 +496,7 @@ namespace HDExportMetadataAndFile
                                                                         {
                                                                             try
                                                                             {
-                                                                                if (copyFile(audioDb.FILE_NAME, OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME), Path.Combine(srcAudioPath, audioDb.NAS_DATA_PATH), audioDb.USERNAME, audioDb.PASSWORD, ftpUploadFolder, tempConfig.NasUsername, tempConfig.NasPass))
+                                                                                if (copyFile(audioDb.FILE_NAME, OriginalFileName + Path.GetExtension(audioDb.FILE_NAME), Path.Combine(srcAudioPath, audioDb.NAS_DATA_PATH), audioDb.USERNAME, audioDb.PASSWORD, ftpUploadFolder, tempConfig.NasUsername, tempConfig.NasPass))
                                                                                 {
                                                                                     //Ghi log
                                                                                     addLog(_logFile, "Node 73: Xuat image original bang ftp thanh cong");
@@ -532,7 +532,7 @@ namespace HDExportMetadataAndFile
                                                                         //unc
                                                                         try
                                                                         {
-                                                                            if (uploadFromUnc(Path.Combine(Path.Combine(audioDb.UNC_HOME, audioDb.NAS_DATA_PATH), audioDb.HD_CLIP), OriginalFileName + "." + Path.GetExtension(audioDb.HD_CLIP), ftpUploadFolder, tempConfig.NasUsername, tempConfig.NasPass))
+                                                                            if (UploadFromUnc(Path.Combine(Path.Combine(audioDb.UNC_HOME, audioDb.NAS_DATA_PATH), audioDb.HD_CLIP), OriginalFileName + Path.GetExtension(audioDb.HD_CLIP), ftpUploadFolder, tempConfig.NasUsername, tempConfig.NasPass))
                                                                             {
                                                                                 uncPreviewSucess = true;
                                                                                 //Ghi log
@@ -553,7 +553,7 @@ namespace HDExportMetadataAndFile
                                                                         {
                                                                             try
                                                                             {
-                                                                                if (copyFile(audioDb.HD_CLIP, OriginalFileName + "." + Path.GetExtension(audioDb.HD_CLIP), Path.Combine(srcAudioPath, audioDb.NAS_DATA_PATH), audioDb.USERNAME, audioDb.PASSWORD, ftpUploadFolder, tempConfig.NasUsername, tempConfig.NasPass))
+                                                                                if (copyFile(audioDb.HD_CLIP, OriginalFileName + Path.GetExtension(audioDb.HD_CLIP), Path.Combine(srcAudioPath, audioDb.NAS_DATA_PATH), audioDb.USERNAME, audioDb.PASSWORD, ftpUploadFolder, tempConfig.NasUsername, tempConfig.NasPass))
                                                                                 {
                                                                                     //Ghi log
                                                                                     addLog(_logFile, "Node 73: Xuat Preview original bang ftp thanh cong");
@@ -590,7 +590,7 @@ namespace HDExportMetadataAndFile
                                                             //            //unc
                                                             //            try
                                                             //            {
-                                                            //                if (uploadFromUnc(Path.Combine(audioDb.UNC_BASE_PATH_DATA3, audioDb.FILE_NAME), OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME), tempConfig.NasPath, tempConfig.NasUsername, tempConfig.NasPass))
+                                                            //                if (uploadFromUnc(Path.Combine(audioDb.UNC_BASE_PATH_DATA3, audioDb.FILE_NAME), OriginalFileName +   Path.GetExtension(audioDb.FILE_NAME), tempConfig.NasPath, tempConfig.NasUsername, tempConfig.NasPass))
                                                             //                {
                                                             //                    uncPicSucess = true;
                                                             //                    //Ghi log
@@ -611,7 +611,7 @@ namespace HDExportMetadataAndFile
                                                             //            {
                                                             //                try
                                                             //                {
-                                                            //                    if (copyFile(audioDb.FILE_NAME, OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME), Path.Combine(srcAudioPath, audioDb.DATA3_DIRECTORY), audioDb.USERNAME, audioDb.PASSWORD, tempConfig.NasPath, tempConfig.NasUsername, tempConfig.NasPass))
+                                                            //                    if (copyFile(audioDb.FILE_NAME, OriginalFileName +   Path.GetExtension(audioDb.FILE_NAME), Path.Combine(srcAudioPath, audioDb.DATA3_DIRECTORY), audioDb.USERNAME, audioDb.PASSWORD, tempConfig.NasPath, tempConfig.NasUsername, tempConfig.NasPass))
                                                             //                    {
                                                             //                        //Ghi log
                                                             //                        addLog(_logFile, "Node 73: Xuat poster bang ftp thanh cong");
@@ -647,7 +647,7 @@ namespace HDExportMetadataAndFile
                                                                         //unc
                                                                         try
                                                                         {
-                                                                            if (uploadFromUnc(Path.Combine(Path.Combine(audioDb.UNC_HOME, audioDb.NAS_DATA_PATH), audioDb.FILE_NAME), OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME), ftpUploadFolder, tempConfig.NasUsername, tempConfig.NasPass))
+                                                                            if (UploadFromUnc(Path.Combine(Path.Combine(audioDb.UNC_HOME, audioDb.NAS_DATA_PATH), audioDb.FILE_NAME), OriginalFileName + Path.GetExtension(audioDb.FILE_NAME), ftpUploadFolder, tempConfig.NasUsername, tempConfig.NasPass))
                                                                             {
                                                                                 uncAuOriginalSucess = true;
                                                                                 //Ghi log
@@ -668,7 +668,7 @@ namespace HDExportMetadataAndFile
                                                                         {
                                                                             try
                                                                             {
-                                                                                if (copyFile(audioDb.FILE_NAME, OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME), Path.Combine(srcAudioPath, audioDb.NAS_DATA_PATH), audioDb.USERNAME, audioDb.PASSWORD, ftpUploadFolder, tempConfig.NasUsername, tempConfig.NasPass))
+                                                                                if (copyFile(audioDb.FILE_NAME, OriginalFileName + Path.GetExtension(audioDb.FILE_NAME), Path.Combine(srcAudioPath, audioDb.NAS_DATA_PATH), audioDb.USERNAME, audioDb.PASSWORD, ftpUploadFolder, tempConfig.NasUsername, tempConfig.NasPass))
                                                                                 {
                                                                                     //Ghi log
                                                                                     addLog(_logFile, "Node 73: Xuat audio upload bang ftp thanh cong");
@@ -705,7 +705,7 @@ namespace HDExportMetadataAndFile
                                                                         //unc
                                                                         try
                                                                         {
-                                                                            if (uploadFromUnc(Path.Combine(Path.Combine(audioDb.UNC_HOME, audioDb.NAS_DATA_PATH), audioDb.FILE_NAME), OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME), ftpUploadFolder, tempConfig.NasUsername, tempConfig.NasPass))
+                                                                            if (UploadFromUnc(Path.Combine(Path.Combine(audioDb.UNC_HOME, audioDb.NAS_DATA_PATH), audioDb.FILE_NAME), OriginalFileName + Path.GetExtension(audioDb.FILE_NAME), ftpUploadFolder, tempConfig.NasUsername, tempConfig.NasPass))
                                                                             {
                                                                                 uncSubtitleSucess = true;
                                                                                 //Ghi log
@@ -727,7 +727,7 @@ namespace HDExportMetadataAndFile
                                                                         {
                                                                             try
                                                                             {
-                                                                                if (copyFile(audioDb.FILE_NAME, OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME), Path.Combine(srcAudioPath, audioDb.NAS_DATA_PATH), audioDb.USERNAME, audioDb.PASSWORD, ftpUploadFolder, tempConfig.NasUsername, tempConfig.NasPass))
+                                                                                if (copyFile(audioDb.FILE_NAME, OriginalFileName + Path.GetExtension(audioDb.FILE_NAME), Path.Combine(srcAudioPath, audioDb.NAS_DATA_PATH), audioDb.USERNAME, audioDb.PASSWORD, ftpUploadFolder, tempConfig.NasUsername, tempConfig.NasPass))
                                                                                 {
                                                                                     //Ghi log
                                                                                     addLog(_logFile, "Node 73: Xuat subtitle bang ftp thanh cong");
@@ -777,7 +777,7 @@ namespace HDExportMetadataAndFile
                                                                     xmlObject.SaveXmlFile(temp);
                                                                     try
                                                                     {
-                                                                        if (uploadFromUnc(temp, OriginalFileName + ".xml", ftpUploadFolder, tempConfig.NasUsername, tempConfig.NasPass))
+                                                                        if (UploadFromUnc(temp, OriginalFileName + ".xml", ftpUploadFolder, tempConfig.NasUsername, tempConfig.NasPass))
                                                                         {
                                                                             addLog(_logFile, "Node 73: Xuat xml len ftp bang unc thanh cong");
                                                                             File.Delete(temp);
@@ -885,7 +885,7 @@ namespace HDExportMetadataAndFile
                                                                 //            bool uncSuccess = false;
                                                                 //            try
                                                                 //            {
-                                                                //                File.Copy(Path.Combine(audioDb.UNC_BASE_PATH_DATA3, audioDb.FILE_NAME), Path.Combine(tempConfig.LocalPath, OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME)));
+                                                                //                File.Copy(Path.Combine(audioDb.UNC_BASE_PATH_DATA3, audioDb.FILE_NAME), Path.Combine(tempConfig.LocalPath, OriginalFileName +   Path.GetExtension(audioDb.FILE_NAME)));
                                                                 //                uncSuccess = true;
                                                                 //                //Ghi log
                                                                 //                addLog(_logFile, "Node 73: Xuat lowres sang unc path tu unc path thanh cong");
@@ -904,7 +904,7 @@ namespace HDExportMetadataAndFile
                                                                 //                    using (WebClient ftpClient = new WebClient())
                                                                 //                    {
                                                                 //                        ftpClient.Credentials = new NetworkCredential(audioDb.USERNAME, audioDb.PASSWORD);
-                                                                //                        ftpClient.DownloadFile("ftp://" + audioDb.NAS_IP + ":" + audioDb.PORT + audioDb.DATA3_DIRECTORY + "/" + audioDb.FILE_NAME, Path.Combine(tempConfig.LocalPath, OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME)));
+                                                                //                        ftpClient.DownloadFile("ftp://" + audioDb.NAS_IP + ":" + audioDb.PORT + audioDb.DATA3_DIRECTORY + "/" + audioDb.FILE_NAME, Path.Combine(tempConfig.LocalPath, OriginalFileName +   Path.GetExtension(audioDb.FILE_NAME)));
                                                                 //                        //Ghi log
                                                                 //                        addLog(_logFile, "Node 73: Xuat lowres sang unc path tu ftp path thanh cong");
                                                                 //                    }
@@ -940,7 +940,7 @@ namespace HDExportMetadataAndFile
                                                                 //            bool uncSuccess = false;
                                                                 //            try
                                                                 //            {
-                                                                //                File.Copy(Path.Combine(Path.Combine(audioDb.UNC_HOME, audioDb.NAS_DATA_PATH), audioDb.FILE_NAME), Path.Combine(tempConfig.LocalPath, OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME)));
+                                                                //                File.Copy(Path.Combine(Path.Combine(audioDb.UNC_HOME, audioDb.NAS_DATA_PATH), audioDb.FILE_NAME), Path.Combine(tempConfig.LocalPath, OriginalFileName +   Path.GetExtension(audioDb.FILE_NAME)));
                                                                 //                uncSuccess = true;
                                                                 //                //Ghi log
                                                                 //                addLog(_logFile, "Node 73: Xuat highres original sang unc path tu unc path thanh cong");
@@ -959,7 +959,7 @@ namespace HDExportMetadataAndFile
                                                                 //                    using (WebClient ftpClient = new WebClient())
                                                                 //                    {
                                                                 //                        ftpClient.Credentials = new NetworkCredential(audioDb.USERNAME, audioDb.PASSWORD);
-                                                                //                        ftpClient.DownloadFile("ftp://" + audioDb.NAS_IP + ":" + audioDb.PORT + "/" + audioDb.NAS_DATA_PATH + "/" + audioDb.FILE_NAME, Path.Combine(tempConfig.LocalPath, OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME)));
+                                                                //                        ftpClient.DownloadFile("ftp://" + audioDb.NAS_IP + ":" + audioDb.PORT + "/" + audioDb.NAS_DATA_PATH + "/" + audioDb.FILE_NAME, Path.Combine(tempConfig.LocalPath, OriginalFileName +   Path.GetExtension(audioDb.FILE_NAME)));
                                                                 //                        //Ghi log
                                                                 //                        addLog(_logFile, "Node 73: Xuat highres original sang unc path tu ftp path thanh cong");
                                                                 //                    }
@@ -996,7 +996,7 @@ namespace HDExportMetadataAndFile
                                                                 //            bool uncSuccess = false;
                                                                 //            try
                                                                 //            {
-                                                                //                File.Copy(Path.Combine(audioDb.UNC_BASE_PATH_DATA3, audioDb.FILE_NAME), Path.Combine(tempConfig.LocalPath, OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME)));
+                                                                //                File.Copy(Path.Combine(audioDb.UNC_BASE_PATH_DATA3, audioDb.FILE_NAME), Path.Combine(tempConfig.LocalPath, OriginalFileName +   Path.GetExtension(audioDb.FILE_NAME)));
                                                                 //                uncSuccess = true;
                                                                 //                //Ghi log
                                                                 //                addLog(_logFile, "Node 73: Xuat audio sang unc path tu unc path thanh cong");
@@ -1015,7 +1015,7 @@ namespace HDExportMetadataAndFile
                                                                 //                    using (WebClient ftpClient = new WebClient())
                                                                 //                    {
                                                                 //                        ftpClient.Credentials = new NetworkCredential(audioDb.USERNAME, audioDb.PASSWORD);
-                                                                //                        ftpClient.DownloadFile("ftp://" + audioDb.NAS_IP + ":" + audioDb.PORT + audioDb.DATA3_DIRECTORY + "/" + audioDb.FILE_NAME, Path.Combine(tempConfig.LocalPath, OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME)));
+                                                                //                        ftpClient.DownloadFile("ftp://" + audioDb.NAS_IP + ":" + audioDb.PORT + audioDb.DATA3_DIRECTORY + "/" + audioDb.FILE_NAME, Path.Combine(tempConfig.LocalPath, OriginalFileName +   Path.GetExtension(audioDb.FILE_NAME)));
                                                                 //                        //Ghi log
                                                                 //                        addLog(_logFile, "Node 73: Xuat audio sang unc path tu ftp path thanh cong");
                                                                 //                    }
@@ -1051,7 +1051,7 @@ namespace HDExportMetadataAndFile
                                                                             bool uncSuccess = false;
                                                                             try
                                                                             {
-                                                                                File.Copy(Path.Combine(Path.Combine(audioDb.UNC_HOME, audioDb.NAS_DATA_PATH), audioDb.FILE_NAME), Path.Combine(localUploadFolder, OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME)));
+                                                                                File.Copy(Path.Combine(Path.Combine(audioDb.UNC_HOME, audioDb.NAS_DATA_PATH), audioDb.FILE_NAME), Path.Combine(localUploadFolder, OriginalFileName + Path.GetExtension(audioDb.FILE_NAME)));
                                                                                 uncSuccess = true;
                                                                                 //Ghi log
                                                                                 addLog(_logFile, "Node 73: Xuat audio Upload sang unc path tu unc path thanh cong");
@@ -1070,7 +1070,7 @@ namespace HDExportMetadataAndFile
                                                                                     using (WebClient ftpClient = new WebClient())
                                                                                     {
                                                                                         ftpClient.Credentials = new NetworkCredential(audioDb.USERNAME, audioDb.PASSWORD);
-                                                                                        ftpClient.DownloadFile("ftp://" + audioDb.NAS_IP + ":" + audioDb.PORT + "/" + audioDb.NAS_DATA_PATH + "/" + audioDb.FILE_NAME, Path.Combine(localUploadFolder, OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME)));
+                                                                                        ftpClient.DownloadFile("ftp://" + audioDb.NAS_IP + ":" + audioDb.PORT + "/" + audioDb.NAS_DATA_PATH + "/" + audioDb.FILE_NAME, Path.Combine(localUploadFolder, OriginalFileName + Path.GetExtension(audioDb.FILE_NAME)));
                                                                                         //Ghi log
                                                                                         addLog(_logFile, "Node 73: Xuat audio Upload sang unc path tu ftp path thanh cong");
                                                                                     }
@@ -1107,7 +1107,7 @@ namespace HDExportMetadataAndFile
                                                                             bool uncSuccess = false;
                                                                             try
                                                                             {
-                                                                                File.Copy(Path.Combine(Path.Combine(audioDb.UNC_HOME, audioDb.NAS_DATA_PATH), audioDb.FILE_NAME), Path.Combine(localUploadFolder, OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME)));
+                                                                                File.Copy(Path.Combine(Path.Combine(audioDb.UNC_HOME, audioDb.NAS_DATA_PATH), audioDb.FILE_NAME), Path.Combine(localUploadFolder, OriginalFileName + Path.GetExtension(audioDb.FILE_NAME)));
                                                                                 uncSuccess = true;
                                                                                 //Ghi log
                                                                                 addLog(_logFile, "Node 73: Xuat Image sang unc path tu unc path thanh cong");
@@ -1126,7 +1126,7 @@ namespace HDExportMetadataAndFile
                                                                                     using (WebClient ftpClient = new WebClient())
                                                                                     {
                                                                                         ftpClient.Credentials = new NetworkCredential(audioDb.USERNAME, audioDb.PASSWORD);
-                                                                                        ftpClient.DownloadFile("ftp://" + audioDb.NAS_IP + ":" + audioDb.PORT + "/" + audioDb.NAS_DATA_PATH + "/" + audioDb.FILE_NAME, Path.Combine(localUploadFolder, OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME)));
+                                                                                        ftpClient.DownloadFile("ftp://" + audioDb.NAS_IP + ":" + audioDb.PORT + "/" + audioDb.NAS_DATA_PATH + "/" + audioDb.FILE_NAME, Path.Combine(localUploadFolder, OriginalFileName + Path.GetExtension(audioDb.FILE_NAME)));
                                                                                         //Ghi log
                                                                                         addLog(_logFile, "Node 73: Xuat Image sang unc path tu ftp path thanh cong");
                                                                                     }
@@ -1162,7 +1162,7 @@ namespace HDExportMetadataAndFile
                                                                             bool uncSuccess = false;
                                                                             try
                                                                             {
-                                                                                File.Copy(Path.Combine(Path.Combine(audioDb.UNC_HOME, audioDb.NAS_DATA_PATH), audioDb.HD_CLIP), Path.Combine(localUploadFolder, OriginalFileName + "." + Path.GetExtension(audioDb.HD_CLIP)));
+                                                                                File.Copy(Path.Combine(Path.Combine(audioDb.UNC_HOME, audioDb.NAS_DATA_PATH), audioDb.HD_CLIP), Path.Combine(localUploadFolder, OriginalFileName + Path.GetExtension(audioDb.HD_CLIP)));
                                                                                 uncSuccess = true;
                                                                                 //Ghi log
                                                                                 addLog(_logFile, "Node 73: Xuat Preview sang unc path tu unc path thanh cong");
@@ -1181,7 +1181,7 @@ namespace HDExportMetadataAndFile
                                                                                     using (WebClient ftpClient = new WebClient())
                                                                                     {
                                                                                         ftpClient.Credentials = new NetworkCredential(audioDb.USERNAME, audioDb.PASSWORD);
-                                                                                        ftpClient.DownloadFile("ftp://" + audioDb.NAS_IP + ":" + audioDb.PORT + "/" + audioDb.NAS_DATA_PATH + "/" + audioDb.HD_CLIP, Path.Combine(localUploadFolder, OriginalFileName + "." + Path.GetExtension(audioDb.HD_CLIP)));
+                                                                                        ftpClient.DownloadFile("ftp://" + audioDb.NAS_IP + ":" + audioDb.PORT + "/" + audioDb.NAS_DATA_PATH + "/" + audioDb.HD_CLIP, Path.Combine(localUploadFolder, OriginalFileName + Path.GetExtension(audioDb.HD_CLIP)));
                                                                                         //Ghi log
                                                                                         addLog(_logFile, "Node 73: " + postId.ToString() + " - Xuat Preview sang unc path tu ftp path thanh cong");
                                                                                     }
@@ -1218,7 +1218,7 @@ namespace HDExportMetadataAndFile
                                                                             bool uncSuccess = false;
                                                                             try
                                                                             {
-                                                                                File.Copy(Path.Combine(Path.Combine(audioDb.UNC_HOME, audioDb.NAS_DATA_PATH), audioDb.FILE_NAME), Path.Combine(localUploadFolder, OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME)));
+                                                                                File.Copy(Path.Combine(Path.Combine(audioDb.UNC_HOME, audioDb.NAS_DATA_PATH), audioDb.FILE_NAME), Path.Combine(localUploadFolder, OriginalFileName + Path.GetExtension(audioDb.FILE_NAME)));
                                                                                 uncSuccess = true;
                                                                                 //Ghi log
                                                                                 addLog(_logFile, "Node 73: Xuat Subtitle sang unc path tu unc path thanh cong");
@@ -1237,7 +1237,7 @@ namespace HDExportMetadataAndFile
                                                                                     using (WebClient ftpClient = new WebClient())
                                                                                     {
                                                                                         ftpClient.Credentials = new NetworkCredential(audioDb.USERNAME, audioDb.PASSWORD);
-                                                                                        ftpClient.DownloadFile("ftp://" + audioDb.NAS_IP + ":" + audioDb.PORT + "/" + audioDb.NAS_DATA_PATH + "/" + audioDb.FILE_NAME, Path.Combine(localUploadFolder, OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME)));
+                                                                                        ftpClient.DownloadFile("ftp://" + audioDb.NAS_IP + ":" + audioDb.PORT + "/" + audioDb.NAS_DATA_PATH + "/" + audioDb.FILE_NAME, Path.Combine(localUploadFolder, OriginalFileName + Path.GetExtension(audioDb.FILE_NAME)));
                                                                                         //Ghi log
                                                                                         addLog(_logFile, "Node 73: Xuat Subtitle sang unc path tu ftp path thanh cong");
                                                                                     }
@@ -1426,7 +1426,7 @@ namespace HDExportMetadataAndFile
                                                             OriginalFileName += addSymbol;
                                                         }
                                                         if (tempConfig.NasPath.Length > 7)
-                                                            if (!ftpDirectoryExists(typeDescription, tempConfig.NasPath, tempConfig.NasUsername, tempConfig.NasPass))
+                                                            if (!DirectoryExists(tempConfig.NasPath, tempConfig.NasUsername, tempConfig.NasPass))
                                                             {
                                                                 if (!createFTPDirectory(tempConfig.NasPath, tempConfig.NasUsername, tempConfig.NasPass, typeDescription))
                                                                 {
@@ -1492,7 +1492,7 @@ namespace HDExportMetadataAndFile
                                                                         //unc
                                                                         try
                                                                         {
-                                                                            if (uploadFromUnc(Path.Combine(lowresDb.UNC_BASE_PATH_DATA3, lowresDb.FILE_NAME), OriginalFileName + "." + Path.GetExtension(lowresDb.FILE_NAME), ftpUploadFolder, tempConfig.NasUsername, tempConfig.NasPass))
+                                                                            if (UploadFromUnc(Path.Combine(lowresDb.UNC_BASE_PATH_DATA3, lowresDb.FILE_NAME), OriginalFileName + Path.GetExtension(lowresDb.FILE_NAME), ftpUploadFolder, tempConfig.NasUsername, tempConfig.NasPass))
                                                                             {
                                                                                 uncLowresSucess = true;
                                                                                 //Ghi log
@@ -1513,7 +1513,7 @@ namespace HDExportMetadataAndFile
                                                                         {
                                                                             try
                                                                             {
-                                                                                if (copyFile(lowresDb.FILE_NAME, OriginalFileName + "." + Path.GetExtension(lowresDb.FILE_NAME), srcLowresPath + lowresDb.DATA3_DIRECTORY, lowresDb.USERNAME, lowresDb.PASSWORD, ftpUploadFolder, tempConfig.NasUsername, tempConfig.NasPass))
+                                                                                if (copyFile(lowresDb.FILE_NAME, OriginalFileName + Path.GetExtension(lowresDb.FILE_NAME), srcLowresPath + lowresDb.DATA3_DIRECTORY, lowresDb.USERNAME, lowresDb.PASSWORD, ftpUploadFolder, tempConfig.NasUsername, tempConfig.NasPass))
                                                                                 {
                                                                                     //Ghi log
                                                                                     addLog(_logFile, "Node 74: Xuat lowres bang ftp thanh cong");
@@ -1549,7 +1549,7 @@ namespace HDExportMetadataAndFile
                                                                         //unc
                                                                         try
                                                                         {
-                                                                            if (uploadFromUnc(Path.Combine(Path.Combine(audioDb.UNC_HOME, audioDb.NAS_DATA_PATH), audioDb.FILE_NAME), OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME), ftpUploadFolder, tempConfig.NasUsername, tempConfig.NasPass))
+                                                                            if (UploadFromUnc(Path.Combine(Path.Combine(audioDb.UNC_HOME, audioDb.NAS_DATA_PATH), audioDb.FILE_NAME), OriginalFileName + Path.GetExtension(audioDb.FILE_NAME), ftpUploadFolder, tempConfig.NasUsername, tempConfig.NasPass))
                                                                             {
                                                                                 uncHighresOriginalSucess = true;
                                                                                 //Ghi log
@@ -1570,7 +1570,7 @@ namespace HDExportMetadataAndFile
                                                                         {
                                                                             try
                                                                             {
-                                                                                if (copyFile(audioDb.FILE_NAME, OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME), Path.Combine(srcAudioPath, audioDb.NAS_DATA_PATH), audioDb.USERNAME, audioDb.PASSWORD, ftpUploadFolder, tempConfig.NasUsername, tempConfig.NasPass))
+                                                                                if (copyFile(audioDb.FILE_NAME, OriginalFileName + Path.GetExtension(audioDb.FILE_NAME), Path.Combine(srcAudioPath, audioDb.NAS_DATA_PATH), audioDb.USERNAME, audioDb.PASSWORD, ftpUploadFolder, tempConfig.NasUsername, tempConfig.NasPass))
                                                                                 {
                                                                                     //Ghi log
                                                                                     addLog(_logFile, "Node 74: Xuat highres original bang ftp thanh cong");
@@ -1607,7 +1607,7 @@ namespace HDExportMetadataAndFile
                                                             //            //unc
                                                             //            try
                                                             //            {
-                                                            //                if (uploadFromUnc(Path.Combine(Path.Combine(audioDb.UNC_HOME, audioDb.NAS_DATA_PATH), audioDb.FILE_NAME), OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME), tempConfig.NasPath, tempConfig.NasUsername, tempConfig.NasPass))
+                                                            //                if (uploadFromUnc(Path.Combine(Path.Combine(audioDb.UNC_HOME, audioDb.NAS_DATA_PATH), audioDb.FILE_NAME), OriginalFileName +   Path.GetExtension(audioDb.FILE_NAME), tempConfig.NasPath, tempConfig.NasUsername, tempConfig.NasPass))
                                                             //                {
                                                             //                    uncImageSucess = true;
                                                             //                    //Ghi log
@@ -1628,7 +1628,7 @@ namespace HDExportMetadataAndFile
                                                             //            {
                                                             //                try
                                                             //                {
-                                                            //                    if (copyFile(audioDb.FILE_NAME, OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME), Path.Combine(srcAudioPath, audioDb.NAS_DATA_PATH), audioDb.USERNAME, audioDb.PASSWORD, tempConfig.NasPath, tempConfig.NasUsername, tempConfig.NasPass))
+                                                            //                    if (copyFile(audioDb.FILE_NAME, OriginalFileName +   Path.GetExtension(audioDb.FILE_NAME), Path.Combine(srcAudioPath, audioDb.NAS_DATA_PATH), audioDb.USERNAME, audioDb.PASSWORD, tempConfig.NasPath, tempConfig.NasUsername, tempConfig.NasPass))
                                                             //                    {
                                                             //                        //Ghi log
                                                             //                        addLog(_logFile, "Node 74: Xuat image original bang ftp thanh cong");
@@ -1664,7 +1664,7 @@ namespace HDExportMetadataAndFile
                                                             //            //unc
                                                             //            try
                                                             //            {
-                                                            //                if (uploadFromUnc(Path.Combine(Path.Combine(audioDb.UNC_HOME, audioDb.NAS_DATA_PATH), audioDb.HD_CLIP), OriginalFileName + "." + Path.GetExtension(audioDb.HD_CLIP), tempConfig.NasPath, tempConfig.NasUsername, tempConfig.NasPass))
+                                                            //                if (uploadFromUnc(Path.Combine(Path.Combine(audioDb.UNC_HOME, audioDb.NAS_DATA_PATH), audioDb.HD_CLIP), OriginalFileName +   Path.GetExtension(audioDb.HD_CLIP), tempConfig.NasPath, tempConfig.NasUsername, tempConfig.NasPass))
                                                             //                {
                                                             //                    uncPreviewSucess = true;
                                                             //                    //Ghi log
@@ -1685,7 +1685,7 @@ namespace HDExportMetadataAndFile
                                                             //            {
                                                             //                try
                                                             //                {
-                                                            //                    if (copyFile(audioDb.HD_CLIP, OriginalFileName + "." + Path.GetExtension(audioDb.HD_CLIP), Path.Combine(srcAudioPath, audioDb.NAS_DATA_PATH), audioDb.USERNAME, audioDb.PASSWORD, tempConfig.NasPath, tempConfig.NasUsername, tempConfig.NasPass))
+                                                            //                    if (copyFile(audioDb.HD_CLIP, OriginalFileName +   Path.GetExtension(audioDb.HD_CLIP), Path.Combine(srcAudioPath, audioDb.NAS_DATA_PATH), audioDb.USERNAME, audioDb.PASSWORD, tempConfig.NasPath, tempConfig.NasUsername, tempConfig.NasPass))
                                                             //                    {
                                                             //                        //Ghi log
                                                             //                        addLog(_logFile, "Node 74: Xuat Preview original bang ftp thanh cong");
@@ -1722,7 +1722,7 @@ namespace HDExportMetadataAndFile
                                                                         //unc
                                                                         try
                                                                         {
-                                                                            if (uploadFromUnc(Path.Combine(audioDb.UNC_BASE_PATH_DATA3, audioDb.FILE_NAME), OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME), ftpUploadFolder, tempConfig.NasUsername, tempConfig.NasPass))
+                                                                            if (UploadFromUnc(Path.Combine(audioDb.UNC_BASE_PATH_DATA3, audioDb.FILE_NAME), OriginalFileName + Path.GetExtension(audioDb.FILE_NAME), ftpUploadFolder, tempConfig.NasUsername, tempConfig.NasPass))
                                                                             {
                                                                                 uncPicSucess = true;
                                                                                 //Ghi log
@@ -1743,7 +1743,7 @@ namespace HDExportMetadataAndFile
                                                                         {
                                                                             try
                                                                             {
-                                                                                if (copyFile(audioDb.FILE_NAME, OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME), Path.Combine(srcAudioPath, audioDb.DATA3_DIRECTORY), audioDb.USERNAME, audioDb.PASSWORD, ftpUploadFolder, tempConfig.NasUsername, tempConfig.NasPass))
+                                                                                if (copyFile(audioDb.FILE_NAME, OriginalFileName + Path.GetExtension(audioDb.FILE_NAME), Path.Combine(srcAudioPath, audioDb.DATA3_DIRECTORY), audioDb.USERNAME, audioDb.PASSWORD, ftpUploadFolder, tempConfig.NasUsername, tempConfig.NasPass))
                                                                                 {
                                                                                     //Ghi log
                                                                                     addLog(_logFile, "Node 74: Xuat audio Original bang ftp thanh cong");
@@ -1779,7 +1779,7 @@ namespace HDExportMetadataAndFile
                                                             //            //unc
                                                             //            try
                                                             //            {
-                                                            //                if (uploadFromUnc(Path.Combine(Path.Combine(audioDb.UNC_HOME, audioDb.NAS_DATA_PATH), audioDb.FILE_NAME), OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME), tempConfig.NasPath, tempConfig.NasUsername, tempConfig.NasPass))
+                                                            //                if (uploadFromUnc(Path.Combine(Path.Combine(audioDb.UNC_HOME, audioDb.NAS_DATA_PATH), audioDb.FILE_NAME), OriginalFileName +   Path.GetExtension(audioDb.FILE_NAME), tempConfig.NasPath, tempConfig.NasUsername, tempConfig.NasPass))
                                                             //                {
                                                             //                    uncAuOriginalSucess = true;
                                                             //                    //Ghi log
@@ -1800,7 +1800,7 @@ namespace HDExportMetadataAndFile
                                                             //            {
                                                             //                try
                                                             //                {
-                                                            //                    if (copyFile(audioDb.FILE_NAME, OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME), Path.Combine(srcAudioPath, audioDb.NAS_DATA_PATH), audioDb.USERNAME, audioDb.PASSWORD, tempConfig.NasPath, tempConfig.NasUsername, tempConfig.NasPass))
+                                                            //                    if (copyFile(audioDb.FILE_NAME, OriginalFileName +   Path.GetExtension(audioDb.FILE_NAME), Path.Combine(srcAudioPath, audioDb.NAS_DATA_PATH), audioDb.USERNAME, audioDb.PASSWORD, tempConfig.NasPath, tempConfig.NasUsername, tempConfig.NasPass))
                                                             //                    {
                                                             //                        //Ghi log
                                                             //                        addLog(_logFile, "Node 74: Xuat audio original bang ftp thanh cong");
@@ -1887,7 +1887,7 @@ namespace HDExportMetadataAndFile
                                                                         //unc
                                                                         try
                                                                         {
-                                                                            if (uploadFromUnc(Path.Combine(audioDb.UNC_BASE_PATH_DATA3, audioDb.FILE_NAME), OriginalFileName + "_Original." + Path.GetExtension(audioDb.FILE_NAME), ftpUploadFolder, tempConfig.NasUsername, tempConfig.NasPass))
+                                                                            if (UploadFromUnc(Path.Combine(audioDb.UNC_BASE_PATH_DATA3, audioDb.FILE_NAME), OriginalFileName + "_Original." + Path.GetExtension(audioDb.FILE_NAME), ftpUploadFolder, tempConfig.NasUsername, tempConfig.NasPass))
                                                                             {
                                                                                 uncXmlOriginalSucess = true;
                                                                                 //Ghi log
@@ -2017,7 +2017,7 @@ namespace HDExportMetadataAndFile
                                                                             bool uncSuccess = false;
                                                                             try
                                                                             {
-                                                                                File.Copy(Path.Combine(audioDb.UNC_BASE_PATH_DATA3, audioDb.FILE_NAME), Path.Combine(localUploadFolder, OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME)));
+                                                                                File.Copy(Path.Combine(audioDb.UNC_BASE_PATH_DATA3, audioDb.FILE_NAME), Path.Combine(localUploadFolder, OriginalFileName + Path.GetExtension(audioDb.FILE_NAME)));
                                                                                 uncSuccess = true;
                                                                                 //Ghi log
                                                                                 addLog(_logFile, "Node 74: Xuat lowres sang unc path tu unc path thanh cong");
@@ -2036,7 +2036,7 @@ namespace HDExportMetadataAndFile
                                                                                     using (WebClient ftpClient = new WebClient())
                                                                                     {
                                                                                         ftpClient.Credentials = new NetworkCredential(audioDb.USERNAME, audioDb.PASSWORD);
-                                                                                        ftpClient.DownloadFile("ftp://" + audioDb.NAS_IP + ":" + audioDb.PORT + audioDb.DATA3_DIRECTORY + "/" + audioDb.FILE_NAME, Path.Combine(localUploadFolder, OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME)));
+                                                                                        ftpClient.DownloadFile("ftp://" + audioDb.NAS_IP + ":" + audioDb.PORT + audioDb.DATA3_DIRECTORY + "/" + audioDb.FILE_NAME, Path.Combine(localUploadFolder, OriginalFileName + Path.GetExtension(audioDb.FILE_NAME)));
                                                                                         //Ghi log
                                                                                         addLog(_logFile, "Node 74: Xuat lowres sang unc path tu ftp path thanh cong");
                                                                                     }
@@ -2072,7 +2072,7 @@ namespace HDExportMetadataAndFile
                                                                             bool uncSuccess = false;
                                                                             try
                                                                             {
-                                                                                File.Copy(Path.Combine(Path.Combine(audioDb.UNC_HOME, audioDb.NAS_DATA_PATH), audioDb.FILE_NAME), Path.Combine(localUploadFolder, OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME)));
+                                                                                File.Copy(Path.Combine(Path.Combine(audioDb.UNC_HOME, audioDb.NAS_DATA_PATH), audioDb.FILE_NAME), Path.Combine(localUploadFolder, OriginalFileName + Path.GetExtension(audioDb.FILE_NAME)));
                                                                                 uncSuccess = true;
                                                                                 //Ghi log
                                                                                 addLog(_logFile, "Node 74: Xuat highres original sang unc path tu unc path thanh cong");
@@ -2091,7 +2091,7 @@ namespace HDExportMetadataAndFile
                                                                                     using (WebClient ftpClient = new WebClient())
                                                                                     {
                                                                                         ftpClient.Credentials = new NetworkCredential(audioDb.USERNAME, audioDb.PASSWORD);
-                                                                                        ftpClient.DownloadFile("ftp://" + audioDb.NAS_IP + ":" + audioDb.PORT + "/" + audioDb.NAS_DATA_PATH + "/" + audioDb.FILE_NAME, Path.Combine(localUploadFolder, OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME)));
+                                                                                        ftpClient.DownloadFile("ftp://" + audioDb.NAS_IP + ":" + audioDb.PORT + "/" + audioDb.NAS_DATA_PATH + "/" + audioDb.FILE_NAME, Path.Combine(localUploadFolder, OriginalFileName + Path.GetExtension(audioDb.FILE_NAME)));
                                                                                         //Ghi log
                                                                                         addLog(_logFile, "Node 74: Xuat highres original sang unc path tu ftp path thanh cong");
                                                                                     }
@@ -2128,7 +2128,7 @@ namespace HDExportMetadataAndFile
                                                                             bool uncSuccess = false;
                                                                             try
                                                                             {
-                                                                                File.Copy(Path.Combine(audioDb.UNC_BASE_PATH_DATA3, audioDb.FILE_NAME), Path.Combine(localUploadFolder, OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME)));
+                                                                                File.Copy(Path.Combine(audioDb.UNC_BASE_PATH_DATA3, audioDb.FILE_NAME), Path.Combine(localUploadFolder, OriginalFileName + Path.GetExtension(audioDb.FILE_NAME)));
                                                                                 uncSuccess = true;
                                                                                 //Ghi log
                                                                                 addLog(_logFile, "Node 74: Xuat audio Original sang unc path tu unc path thanh cong");
@@ -2147,7 +2147,7 @@ namespace HDExportMetadataAndFile
                                                                                     using (WebClient ftpClient = new WebClient())
                                                                                     {
                                                                                         ftpClient.Credentials = new NetworkCredential(audioDb.USERNAME, audioDb.PASSWORD);
-                                                                                        ftpClient.DownloadFile("ftp://" + audioDb.NAS_IP + ":" + audioDb.PORT + audioDb.DATA3_DIRECTORY + "/" + audioDb.FILE_NAME, Path.Combine(localUploadFolder, OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME)));
+                                                                                        ftpClient.DownloadFile("ftp://" + audioDb.NAS_IP + ":" + audioDb.PORT + audioDb.DATA3_DIRECTORY + "/" + audioDb.FILE_NAME, Path.Combine(localUploadFolder, OriginalFileName + Path.GetExtension(audioDb.FILE_NAME)));
                                                                                         //Ghi log
                                                                                         addLog(_logFile, "Node 74: Xuat audio Original sang unc path tu ftp path thanh cong");
                                                                                     }
@@ -2183,7 +2183,7 @@ namespace HDExportMetadataAndFile
                                                                 //            bool uncSuccess = false;
                                                                 //            try
                                                                 //            {
-                                                                //                File.Copy(Path.Combine(Path.Combine(audioDb.UNC_HOME, audioDb.NAS_DATA_PATH), audioDb.FILE_NAME), Path.Combine(tempConfig.LocalPath, OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME)));
+                                                                //                File.Copy(Path.Combine(Path.Combine(audioDb.UNC_HOME, audioDb.NAS_DATA_PATH), audioDb.FILE_NAME), Path.Combine(tempConfig.LocalPath, OriginalFileName +   Path.GetExtension(audioDb.FILE_NAME)));
                                                                 //                uncSuccess = true;
                                                                 //                //Ghi log
                                                                 //                addLog(_logFile, "Node 74: Xuat audio original sang unc path tu unc path thanh cong");
@@ -2202,7 +2202,7 @@ namespace HDExportMetadataAndFile
                                                                 //                    using (WebClient ftpClient = new WebClient())
                                                                 //                    {
                                                                 //                        ftpClient.Credentials = new NetworkCredential(audioDb.USERNAME, audioDb.PASSWORD);
-                                                                //                        ftpClient.DownloadFile("ftp://" + audioDb.NAS_IP + ":" + audioDb.PORT + "/" + audioDb.NAS_DATA_PATH + "/" + audioDb.FILE_NAME, Path.Combine(tempConfig.LocalPath, OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME)));
+                                                                //                        ftpClient.DownloadFile("ftp://" + audioDb.NAS_IP + ":" + audioDb.PORT + "/" + audioDb.NAS_DATA_PATH + "/" + audioDb.FILE_NAME, Path.Combine(tempConfig.LocalPath, OriginalFileName +   Path.GetExtension(audioDb.FILE_NAME)));
                                                                 //                        //Ghi log
                                                                 //                        addLog(_logFile, "Node 74: Xuat audio original sang unc path tu ftp path thanh cong");
                                                                 //                    }
@@ -2239,7 +2239,7 @@ namespace HDExportMetadataAndFile
                                                                 //            bool uncSuccess = false;
                                                                 //            try
                                                                 //            {
-                                                                //                File.Copy(Path.Combine(Path.Combine(audioDb.UNC_HOME, audioDb.NAS_DATA_PATH), audioDb.FILE_NAME), Path.Combine(tempConfig.LocalPath, OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME)));
+                                                                //                File.Copy(Path.Combine(Path.Combine(audioDb.UNC_HOME, audioDb.NAS_DATA_PATH), audioDb.FILE_NAME), Path.Combine(tempConfig.LocalPath, OriginalFileName +   Path.GetExtension(audioDb.FILE_NAME)));
                                                                 //                uncSuccess = true;
                                                                 //                //Ghi log
                                                                 //                addLog(_logFile, "Node 74: Xuat Image sang unc path tu unc path thanh cong");
@@ -2258,7 +2258,7 @@ namespace HDExportMetadataAndFile
                                                                 //                    using (WebClient ftpClient = new WebClient())
                                                                 //                    {
                                                                 //                        ftpClient.Credentials = new NetworkCredential(audioDb.USERNAME, audioDb.PASSWORD);
-                                                                //                        ftpClient.DownloadFile("ftp://" + audioDb.NAS_IP + ":" + audioDb.PORT + "/" + audioDb.NAS_DATA_PATH + "/" + audioDb.FILE_NAME, Path.Combine(tempConfig.LocalPath, OriginalFileName + "." + Path.GetExtension(audioDb.FILE_NAME)));
+                                                                //                        ftpClient.DownloadFile("ftp://" + audioDb.NAS_IP + ":" + audioDb.PORT + "/" + audioDb.NAS_DATA_PATH + "/" + audioDb.FILE_NAME, Path.Combine(tempConfig.LocalPath, OriginalFileName +   Path.GetExtension(audioDb.FILE_NAME)));
                                                                 //                        //Ghi log
                                                                 //                        addLog(_logFile, "Node 74: Xuat Image sang unc path tu ftp path thanh cong");
                                                                 //                    }
@@ -2294,7 +2294,7 @@ namespace HDExportMetadataAndFile
                                                                 //            bool uncSuccess = false;
                                                                 //            try
                                                                 //            {
-                                                                //                File.Copy(Path.Combine(Path.Combine(audioDb.UNC_HOME, audioDb.NAS_DATA_PATH), audioDb.HD_CLIP), Path.Combine(tempConfig.LocalPath, OriginalFileName + "." + Path.GetExtension(audioDb.HD_CLIP)));
+                                                                //                File.Copy(Path.Combine(Path.Combine(audioDb.UNC_HOME, audioDb.NAS_DATA_PATH), audioDb.HD_CLIP), Path.Combine(tempConfig.LocalPath, OriginalFileName +   Path.GetExtension(audioDb.HD_CLIP)));
                                                                 //                uncSuccess = true;
                                                                 //                //Ghi log
                                                                 //                addLog(_logFile, "Node 74: Xuat Preview sang unc path tu unc path thanh cong");
@@ -2313,7 +2313,7 @@ namespace HDExportMetadataAndFile
                                                                 //                    using (WebClient ftpClient = new WebClient())
                                                                 //                    {
                                                                 //                        ftpClient.Credentials = new NetworkCredential(audioDb.USERNAME, audioDb.PASSWORD);
-                                                                //                        ftpClient.DownloadFile("ftp://" + audioDb.NAS_IP + ":" + audioDb.PORT + "/" + audioDb.NAS_DATA_PATH + "/" + audioDb.HD_CLIP, Path.Combine(tempConfig.LocalPath, OriginalFileName + "." + Path.GetExtension(audioDb.HD_CLIP)));
+                                                                //                        ftpClient.DownloadFile("ftp://" + audioDb.NAS_IP + ":" + audioDb.PORT + "/" + audioDb.NAS_DATA_PATH + "/" + audioDb.HD_CLIP, Path.Combine(tempConfig.LocalPath, OriginalFileName +   Path.GetExtension(audioDb.HD_CLIP)));
                                                                 //                        //Ghi log
                                                                 //                        addLog(_logFile, "Node 74: " + postId.ToString() + " - Xuat Preview sang unc path tu ftp path thanh cong");
                                                                 //                    }
@@ -2554,15 +2554,21 @@ namespace HDExportMetadataAndFile
                 request.Credentials = new NetworkCredential(sourceUser, sourcePass);
                 FtpWebResponse response = (FtpWebResponse)request.GetResponse();
                 Stream responseStream = response.GetResponseStream();
-                bool temp = Upload(targetFileName.Replace(",", "_"), ToByteArray(responseStream), targetURI, targetUser, targetPass);
+                bool temp = Upload(targetFileName.Replace(",", "_").Replace(" ", "_").Replace("?", "_").Replace("!", "_"), ToByteArray(responseStream), targetURI, targetUser, targetPass);
                 responseStream.Close();
                 if (temp)
                     return true;
                 else return false;
             }
+            catch (WebException e)
+            {
+                String status = ((FtpWebResponse)e.Response).StatusDescription;
+                addLog(_logFile, "Loi WebException trong copyFile: " + status + " uri: " + sourceURI + "/" + fileName);
+                return false;
+            }
             catch (Exception ex)
             {
-                addLog(_logFile, "Loi trong copyFile: " + ex.ToString() + " uri: " + sourceURI + "/" + fileName);
+                addLog(_logFile, "Loi Exception trong copyFile: " + ex.ToString() + " uri: " + sourceURI + "/" + fileName);
                 return false;
             }
         }
@@ -2613,9 +2619,9 @@ namespace HDExportMetadataAndFile
         /// <param name="nasPath"></param>
         /// <param name="nasUsername"></param>
         /// <param name="nasPassword"></param>
-        public bool uploadFromUnc(string inputFilePath, string targetFileName, string ftpPath, string nasUsername, string nasPassword)
+        public bool UploadFromUnc(string inputFilePath, string targetFileName, string ftpPath, string nasUsername, string nasPassword)
         {
-            string ftpfullpath = ftpPath + targetFileName.Replace(",", "_");
+            string ftpfullpath = ftpPath + targetFileName.Replace(",", "_").Replace(" ", "_").Replace("?", "_").Replace("!", "_");
             FtpWebRequest ftp = (FtpWebRequest)FtpWebRequest.Create(ftpfullpath);
             try
             {
@@ -2645,7 +2651,7 @@ namespace HDExportMetadataAndFile
             }
             catch (Exception ex)
             {
-                addLog(_logFile, "Loi trong uploadFromUnc: " + ex.ToString() + "ftp full path: " + ftpPath + targetFileName.Replace(",", "_"));
+                addLog(_logFile, "Loi trong uploadFromUnc: " + ex.ToString() + ". \nFtp full path: " + ftpPath + targetFileName.Replace(",", "_").Replace(" ", "_").Replace("?", "_").Replace("!", "_"));
                 return false;
             }
             finally
@@ -2807,65 +2813,87 @@ namespace HDExportMetadataAndFile
             }
         }
         #region Check if ftp directory exists and create new one if not 
-        private bool ftpDirectoryExists(string directory, string ftpHost, string ftpUsername, string ftpPassword)
+        public bool DirectoryExists(string directory, string ftpUsername, string ftpPassword)
         {
+            bool directoryExists;
+
+            var request = (FtpWebRequest)WebRequest.Create(directory);
+            request.Method = WebRequestMethods.Ftp.ListDirectory;
+            request.Credentials = new NetworkCredential(ftpUsername, ftpPassword);
+
             try
             {
-                var list = this.GetFileList(ftpHost, ftpUsername, ftpPassword);
-                if (list.Contains(directory))
-                    return true;
-                else
-                    return false;
-            }
-            catch (Exception ex)
-            {
-                addLog(_logFile, "Check ftpDirectoryExists Error: " + ex.ToString());
-                return false;
-            }
-        }
-        private string[] GetFileList(string ftpHost, string ftpUsername, string ftpPassword)
-        {
-            var ftpPath = ftpHost;
-            var ftpUser = ftpUsername;
-            var ftpPass = ftpPassword;
-            var result = new StringBuilder();
-            var strLink = ftpPath;
-            var reqFtp = (FtpWebRequest)WebRequest.Create(new Uri(strLink));
-            try
-            {
-                reqFtp.UseBinary = true;
-                reqFtp.Credentials = new NetworkCredential(ftpUser, ftpPass);
-                reqFtp.Method = WebRequestMethods.Ftp.ListDirectory;
-                reqFtp.Proxy = null;
-                reqFtp.KeepAlive = false;
-                reqFtp.UsePassive = true;
-                using (var response = reqFtp.GetResponse())
+                using (request.GetResponse())
                 {
-                    using (var reader = new StreamReader(response.GetResponseStream()))
-                    {
-                        var line = reader.ReadLine();
-                        while (line != null)
-                        {
-                            result.Append(line);
-                            result.Append("\n");
-                            line = reader.ReadLine();
-                        }
-                        result.Remove(result.ToString().LastIndexOf('\n'), 1);
-                    }
+                    directoryExists = true;
                 }
-                return result.ToString().Split('\n');
             }
-            catch (Exception ex)
+            catch (WebException ex)
             {
-                addLog(_logFile, "Get FTP file list ERROR: " + ex.ToString());
-                return null;
+                addLog(_logFile, "Check DirectoryExists Error: " + ex.ToString());
+                directoryExists = false;
             }
 
-            finally
-            {
-                reqFtp = null;
-            }
+            return directoryExists;
         }
+        //private bool FtpDirectoryExists(string directory, string ftpHost, string ftpUsername, string ftpPassword)
+        //{
+        //    try
+        //    {
+        //        var list = this.GetFileList(ftpHost, ftpUsername, ftpPassword);
+        //        if (list.Contains(directory))
+        //            return true;
+        //        else
+        //            return false;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        addLog(_logFile, "Check ftpDirectoryExists Error: " + ex.ToString());
+        //        return false;
+        //    }
+        //}
+        //private List<string> GetFileList(string ftpHost, string ftpUsername, string ftpPassword)
+        //{
+        //    var ftpPath = ftpHost;
+        //    var ftpUser = ftpUsername;
+        //    var ftpPass = ftpPassword;
+        //    var strLink = ftpPath;
+        //    var reqFtp = (FtpWebRequest)WebRequest.Create(new Uri(strLink));
+        //    try
+        //    {
+        //        var directories = new List<string>();
+
+        //        reqFtp.UseBinary = true;
+        //        reqFtp.Credentials = new NetworkCredential(ftpUser, ftpPass);
+        //        reqFtp.Method = WebRequestMethods.Ftp.ListDirectory;
+        //        reqFtp.Proxy = null;
+        //        reqFtp.KeepAlive = false;
+        //        reqFtp.UsePassive = true;
+        //        using (var response = reqFtp.GetResponse())
+        //        {
+        //            using (var reader = new StreamReader(response.GetResponseStream()))
+        //            {
+        //                var line = reader.ReadLine();
+        //                while (!string.IsNullOrEmpty(line))
+        //                {
+        //                    directories.Add(line);
+        //                    line = reader.ReadLine();
+        //                }
+        //            }
+        //        }
+        //        return directories;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        addLog(_logFile, "Get FTP file list ERROR: " + ex.ToString());
+        //        return null;
+        //    }
+
+        //    finally
+        //    {
+        //        reqFtp = null;
+        //    }
+        //}
         private bool createFTPDirectory(string ftpHost, string ftpUsername, string ftpPassword, string newDirectory)
         {
             try
@@ -2879,7 +2907,7 @@ namespace HDExportMetadataAndFile
                 using (var resp = (FtpWebResponse)ftpReq.GetResponse())
                 {
                     addLog(_logFile, "Creating FTP directory: " + resp.StatusCode.ToString());
-                }                
+                }
             }
             catch (Exception ex)
             {
