@@ -1726,7 +1726,7 @@ namespace HDExportMetadataAndFile
                                                                             {
                                                                                 uncPicSucess = true;
                                                                                 //Ghi log
-                                                                                addLog(_logFile, "Node 74: Xuat audio Original bang unc thanh cong");
+                                                                                addLog(_logFile, "Node 74: Xuat audio Original bang unc thanh cong, file " + OriginalFileName + Path.GetExtension(audioDb.FILE_NAME));
                                                                             }
                                                                             else
                                                                             {
@@ -2621,7 +2621,7 @@ namespace HDExportMetadataAndFile
         /// <param name="nasPassword"></param>
         public bool UploadFromUnc(string inputFilePath, string targetFileName, string ftpPath, string nasUsername, string nasPassword)
         {
-            string ftpfullpath = ftpPath + targetFileName.Replace(",", "_").Replace(" ", "_").Replace("?", "_").Replace("!", "_");
+            string ftpfullpath = ftpPath + targetFileName.Replace(",", "_").Replace(" ", "_").Replace("?", "_").Replace("!", "_").Replace("-", "_").Replace("#", "_");
             FtpWebRequest ftp = (FtpWebRequest)FtpWebRequest.Create(ftpfullpath);
             try
             {
